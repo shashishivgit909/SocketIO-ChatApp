@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 });
 
 
+//default event , client connected then this event hitted.
 io.on("connection", (socket) => {
   console.log("User Connected in server", socket.id);
 
@@ -39,6 +40,9 @@ io.on("connection", (socket) => {
   socket.on("message",(message)=>{
     console.log(message);
      socket.broadcast.emit("message-received",message);
+
+     //with to socket.to.emit() and   io.to.emit() , is same thing;
+     socket.to(message.room).emit("private-message",message.message)
   })
   
   socket.on("disconnect", () => {
