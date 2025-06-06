@@ -38,11 +38,17 @@ io.on("connection", (socket) => {
   socket.broadcast.emit("welcome",`welcome to the server: ${socket.id}`)
 
   socket.on("message",(message)=>{
-    console.log(message);
-     socket.broadcast.emit("message-received",message);
+    // console.log(message);
+     socket.to(message.room).emit("message-received",message.message);
 
      //with to socket.to.emit() and   io.to.emit() , is same thing;
-     socket.to(message.room).emit("private-message",message.message)
+    //  socket.to(message.room).emit("private-message",message.message)
+  })
+
+
+  socket.on("join-room",(roomName)=>{
+    socket.join(roomName);
+    console.log(`user joined room :${roomName}`)
   })
   
   socket.on("disconnect", () => {
